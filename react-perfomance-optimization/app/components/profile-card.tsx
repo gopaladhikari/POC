@@ -1,4 +1,4 @@
-import { useRef, memo } from "react";
+import { useRef, memo, useMemo } from "react";
 
 type Props = {
   data: {
@@ -38,9 +38,9 @@ function profileCard({
       <p>Email: {data.email}</p>
       <p>Address: {data.address}</p>
 
-      <h2 className="border-t py-4 mt-4 text-2xl font-semibold">
-        Todos
-      </h2>
+      <div className="flex justify-between items-center border-t py-4 mt-4 ">
+        <h2 className="text-2xl font-semibold">Todos</h2>
+      </div>
 
       <div className="space-y-4">
         {todos.map((todo) => (

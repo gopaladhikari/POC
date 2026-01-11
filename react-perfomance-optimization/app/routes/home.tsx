@@ -12,13 +12,6 @@ export function meta({}: Route.MetaArgs) {
 export default function Home() {
   const [value, setValue] = useState("");
 
-  const [data, setData] = useState({
-    name: "Gopal Adhikari",
-    age: 25,
-    email: "gopaladhikari@gmail.com",
-    address: "Bangalore",
-  });
-
   const [todos, setTodos] = useState([
     {
       id: 1,
@@ -37,13 +30,15 @@ export default function Home() {
     },
   ]);
 
-  const userData = useMemo(() => {
-    return data;
-  }, []);
-
-  const userTodo = useMemo(() => {
-    return todos;
-  }, [todos]);
+  const data = useMemo(
+    () => ({
+      name: "John Doe",
+      age: 30,
+      email: "john@example.com",
+      address: "123 Main St, Anytown, USA",
+    }),
+    []
+  );
 
   const handleDeleteTodo = useCallback((id: number) => {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
@@ -70,8 +65,8 @@ export default function Home() {
       />
 
       <ProfileCard
-        data={userData}
-        todos={userTodo}
+        data={data}
+        todos={todos}
         handleDeleteTodo={handleDeleteTodo}
         handleToggleTodoCompleted={handleToggleTodoCompleted}
       />
