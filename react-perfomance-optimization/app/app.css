@@ -9,6 +9,9 @@
 
 html,
 body {
+  h1 {
+    @apply text-2xl font-bold;
+  }
   a,
   button {
     @apply cursor-pointer;
