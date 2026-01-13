@@ -7,6 +7,7 @@ import {
 const routes: RouteConfig = [
   index("routes/home.tsx"),
   route("debounce", "./routes/debounce.tsx"),
+  route("throttle", "./routes/throttle.tsx"),
 ];
 
 export default routes;

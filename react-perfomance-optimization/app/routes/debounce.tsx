@@ -23,8 +23,7 @@ export default function Debounce() {
   }, [debounceQuery]);
 
   return (
-    <div className="border max-w-3xl mx-auto mt-20 p-10 rounded-2xl space-y-4">
-      <h1>React Perfomance Optimzation using Debounce</h1>
+    <div className="space-y-4">
       <input
         type="text"
         value={value}

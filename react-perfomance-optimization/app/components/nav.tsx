@@ -26,6 +26,16 @@ export function Nav() {
               Debounce
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/throttle"
+              className={({ isActive }) => {
+                return isActive ? "text-blue-500" : "text-stone-300";
+              }}
+            >
+              Throttle
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

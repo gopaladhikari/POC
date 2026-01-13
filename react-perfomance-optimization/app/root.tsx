@@ -38,7 +38,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <Nav />
-        {children}
+        <div className="border max-w-3xl mx-auto mt-20 p-10 rounded-2xl space-y-4">
+          <h1>React Perfomance Optimzation</h1>
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
