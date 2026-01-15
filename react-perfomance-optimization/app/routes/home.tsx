@@ -1,7 +1,7 @@
 import { ProfileCardWrapper } from "~/components/profile-card-wrapper";
 import type { Route } from "./+types/home";
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Memoization" },
     {
@@ -9,7 +9,7 @@ export function meta({}: Route.MetaArgs) {
       content: "React Perfomce Optimization using Memoization",
     },
   ];
-}
+};
 
 export default function Home() {
   return (

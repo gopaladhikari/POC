@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Route } from "./+types/throttle";
 import { useThrottle } from "~/hooks/use-throttlle";
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Thhrottle" },
     {
@@ -10,7 +10,7 @@ export function meta({}: Route.MetaArgs) {
       content: "React Perfomce Optimization using Throttle",
     },
   ];
-}
+};
 
 export default function Page() {
   const [scrollY, setScrollY] = useState(0);

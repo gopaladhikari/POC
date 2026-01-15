@@ -46,6 +46,7 @@ export function ProfileCardWrapper() {
       })
     );
   }, []);
+
   return (
     <div className="space-y-4">
       <input
