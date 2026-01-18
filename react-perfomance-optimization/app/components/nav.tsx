@@ -36,6 +36,16 @@ export function Nav() {
               Throttle
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="/event-tracker"
+              className={({ isActive }) => {
+                return isActive ? "text-blue-500" : "text-stone-300";
+              }}
+            >
+              Event Tracker
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </header>

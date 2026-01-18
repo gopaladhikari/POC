@@ -52,7 +52,6 @@ export function ProfileCardWrapper() {
       <input
         type="text"
         value={value}
-        className="border w-full rounded-xl h-10 px-3"
         onChange={(e) => setValue(e.target.value)}
       />
       <ProfileCard

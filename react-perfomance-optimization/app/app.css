@@ -9,15 +9,20 @@
 
 html,
 body {
+  @apply bg-white dark:bg-gray-950;
+
   h1 {
     @apply text-2xl font-bold;
   }
+
   a,
   button {
     @apply cursor-pointer;
   }
 
-  @apply bg-white dark:bg-gray-950;
+  input {
+    @apply border w-full rounded-xl h-10 px-3;
+  }
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
