@@ -4,7 +4,7 @@ nameLenth = len(name)
 
 nameShort = name[1:2]
 
-print(nameShort)  
+print(nameShort)
 
 nameUpper = name.upper()
 

@@ -10,8 +10,8 @@ d = a - b
 e = a * b
 f = a / b
 g = a % b
-h = a ** b
-i = a // b # floor division 10//3 = 3
+h = a**b
+i = a // b  # floor division 10//3 = 3
 
 print(c)
 print(d)
