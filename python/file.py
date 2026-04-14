@@ -10,3 +10,8 @@ input = input("Enter your name: ")
 f = open("python/file.txt", "w")
 f.write(input)
 f.close()
+
+
+with open("python/file.txt", "r") as f:
+    data = f.read()
+    print(data)
