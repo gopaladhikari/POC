@@ -50,3 +50,10 @@ next-env.d.ts
 # React Router
 /.react-router/
 /build/
+
+
+# Python
+
+__pycache__/
+*.py[cod]
+*$py.class
