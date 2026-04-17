@@ -18,7 +18,7 @@ class Signup(BaseModel):
     confirmPassword: str
     email: str
 
-    @model_validator(mode="after")
+    @model_validator(mode="before")
     def matchPassword(cls, values):
         if values["password"] != values["confirmPassword"]:
             raise ValueError("Passwords do not match")

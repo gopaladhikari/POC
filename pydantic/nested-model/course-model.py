@@ -2,10 +2,9 @@ from pydantic import BaseModel
 from typing import List
 
 
-class Course(BaseModel):
+class Lesson(BaseModel):
     id: int
-    name: str
-    modules: List[Module]
+    topic: str
 
 
 class Module(BaseModel):
@@ -14,9 +13,10 @@ class Module(BaseModel):
     lessons: List[Lesson]
 
 
-class Lesson(BaseModel):
+class Course(BaseModel):
     id: int
-    topic: str
+    name: str
+    modules: List[Module]
 
 
 # Course.model_rebuild() No need to do this because it is not referenced itseld

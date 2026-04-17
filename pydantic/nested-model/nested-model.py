@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional
 
 
@@ -17,7 +17,7 @@ class User(BaseModel):
 class Comment(BaseModel):
     id: int
     text: str
-    replies: Optional[List[Comment]] = None  # self referential
+    replies: Optional[List["Comment"]] = None  # self referential
 
 
 Comment.model_rebuild()  # this is because it is referecing itself
