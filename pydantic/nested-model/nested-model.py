@@ -20,7 +20,7 @@ class Comment(BaseModel):
     replies: Optional[List[Comment]] = None  # self referential
 
 
-Comment.model_rebuild()
+Comment.model_rebuild()  # this is because it is referecing itself
 
 
 address = Address(street="123 Main St", city="Anytown", postal_code="12345")

@@ -19,5 +19,5 @@ class Lesson(BaseModel):
     topic: str
 
 
-Course.model_rebuild()
-Module.model_rebuild()
+# Course.model_rebuild() No need to do this because it is not referenced itseld
+# Module.model_rebuild() No need to do this because it is not referenced itseld
