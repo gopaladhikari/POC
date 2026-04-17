@@ -1,4 +1,5 @@
-from pydantic import BaseModel, List, Field, computed_field
+from pydantic import BaseModel, Field, computed_field
+from typing import List
 
 
 class Book(BaseModel):
@@ -13,5 +14,5 @@ class Library(BaseModel):
 
     @computed_field
     @property
-    def totalBooks(self):
+    def totalBooks(self) -> int:
         return len(self.books)

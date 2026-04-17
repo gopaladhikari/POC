@@ -9,5 +9,9 @@ class StudentReportCard(BaseModel):
     @computed_field
     @property
     def average_score(self):
+
+        if not self.scores:
+            return 0
+
         total_score = sum(self.scores.values())
         return total_score / len(self.scores)
