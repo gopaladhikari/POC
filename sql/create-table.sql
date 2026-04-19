@@ -1,3 +1,6 @@
+USE gopuadks;
+
+
 CREATE TABLE users (
 	id INT PRIMARY KEY,
     email VARCHAR(30) UNIQUE NOT NULL,
