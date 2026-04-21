@@ -1,67 +1,84 @@
-from fastapi import FastAPI
-from typing import List
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends
+from database import session
+import database_model
+from models import Product
+from sqlalchemy.orm import Session
+
+from database import engine
 
 app = FastAPI()
 
-
-class BaseProduct(BaseModel):
-    name: str
-    price: float
-    quantity: int
-    description: str
+database_model.Base.metadata.create_all(bind=engine)
 
 
-class Product(BaseProduct):
-    id: int
-
-
-products: List[Product] = [
-    Product(id=1, name="Apple", price=0.5, quantity=10, description="A fruit"),
-    Product(id=2, name="Orange", price=0.7, quantity=5, description="A citrus fruit"),
-    Product(id=3, name="Banana", price=0.2, quantity=7, description="A berry"),
-    Product(id=4, name="Papaya", price=1, quantity=12, description="A tropical fruit"),
-]
+def get_db():
+    db = session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
-def root():
+def read_root():
     return {"message": "Hello World"}
 
 
 @app.get("/products")
-def read_products():
-    return {"products": products}
+def read_products(db: Session = Depends(get_db)):
+    products = db.query(database_model.Product).all()
+    return products
 
 
 @app.get("/products/{id}")
-def read_product(id: int):
-    for product in products:
-        if product.id == id:
-            return {"product": product}
-    return {"message": "Product not found"}
+def read_product(id: int, db: Session = Depends(get_db)):
+    product = (
+        db.query(database_model.Product).filter(database_model.Product.id == id).first()
+    )
+    if product is None:
+        return {"message": "Product not found"}
+    return {"message": "product found", "product": product}
 
 
 @app.post("/products")
-def create_product(product: BaseProduct):
-    id = len(products) + 1
-    products.append(Product(id=id, **product.model_dump()))
-    return {"message": "Product created", "products": products}
+def create_product(product: Product, db: Session = Depends(get_db)):
+    db_product = database_model.Product(**product.model_dump())
+    db.add(db_product)
+    db.commit()
+    return {"message": "Product created"}
 
 
 @app.put("/products/{id}")
-def update_product(id: int, product: BaseProduct):
-    for i, p in enumerate(products):
-        if p.id == id:
-            products[i] = Product(id=id, **product.model_dump())
-            return {"message": "Product updated", "products": products}
-    return {"message": "Product not found"}
+def update_product(id: int, product: Product, db: Session = Depends(get_db)):
+    current_product = (
+        db.query(database_model.Product).filter(database_model.Product.id == id).first()
+    )
+
+    if current_product is None:
+        return {"message": "Product not found"}
+
+    update_data = product.model_dump(exclude_unset=True)
+
+    for key, value in update_data.items():
+        setattr(current_product, key, value)
+
+    db.commit()
+
+    db.refresh(current_product)
+    return {"message": "Product updated"}
 
 
 @app.delete("/products/{id}")
-def delete_product(id: int):
-    for i, p in enumerate(products):
-        if p.id == id:
-            products.pop(i)
-            return {"message": "Product deleted", "products": products}
-    return {"message": "Product not found"}
+def delete_product(id: int, db: Session = Depends(get_db)):
+    product = (
+        db.query(database_model.Product).filter(database_model.Product.id == id).first()
+    )
+
+    if product is None:
+        return {"message": "Product not found"}
+
+    db.delete(product)
+
+    db.commit()
+
+    return {"message": "Product deleted"}
