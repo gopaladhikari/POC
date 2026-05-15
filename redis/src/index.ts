@@ -8,6 +8,12 @@ const redis = new Redis("redis://localhost:6379");
 
 const BANNER_KEY = "app:banner";
 
+function otpKey(phone: string) {
+  return `otp:${phone}`;
+}
+
+// Setup
+
 app.get("/redis", async (req, res) => {
   const reply = await redis.ping();
 
@@ -25,6 +31,8 @@ app.get("/mongo", async (req, res) => {
     database: mongoose.connection.name,
   });
 });
+
+// Banner
 
 app.post("/banner", async (req, res) => {
   const banner = req.body.banner;
@@ -55,6 +63,41 @@ app.get("/banners/exists", async (req, res) => {
   const banner = await redis.exists(BANNER_KEY);
 
   res.json({ exists: Boolean(banner) });
+});
+
+// OTP
+
+app.post("/otp", async (req, res) => {
+  const phone = req.body.phone;
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  await redis.set(otpKey(phone), otp, "EX", 300);
+
+  res.json({ otp });
+});
+
+app.post("/otp/verify", async (req, res) => {
+  const { phone, otp } = req.query;
+
+  const exists = await redis.exists(otpKey(phone as string));
+
+  if (!exists) return res.json({ message: "OTP not found" });
+
+  const redisOtp = await redis.get(otpKey(phone as string));
+
+  if (redisOtp !== otp) return res.json({ message: "OTP not valid" });
+
+  await redis.del(otpKey(phone as string));
+
+  res.json({ otp });
+});
+
+app.get("/otp/:phone/ttl", async (req, res) => {
+  const phone = req.params.phone;
+  const ttl = await redis.ttl(otpKey(phone as string));
+
+  res.json({ ttl });
 });
 
 app.listen(3000, () => {
