@@ -12,7 +12,6 @@ from dotenv import load_dotenv
 import os
 import logging
 
-
 load_dotenv()
 
 algorithm = os.getenv("HS256")
@@ -46,7 +45,7 @@ def create_access_token(email: str, user_id: UUID, expires: timedelta):
     return jwt.encode(encode, access_token_secret, algorithm=algorithm)
 
 
-def authenticate_user(email: str, password: str, db: Session):
+def login_useer(email: str, password: str, db: Session):
     user = db.query(User).filter(User.email == email).first()
 
     if not user or not isinstance(user.password, str):
@@ -56,3 +55,23 @@ def authenticate_user(email: str, password: str, db: Session):
     if not verify_password(password, user.password):
         logging.warning(f"Invalid password for {email}")
         return None
+
+    return user
+
+
+def get_user(user_id: UUID, db: Session):
+    return db.query(User).filter(User.id == user_id).first()
+
+
+def change_password(user_id: UUID, password: str, db: Session):
+    try:
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            logging.warning(f"User {user_id} not found")
+            return None
+        hashed_password = get_password_hash(password)
+        user.password = hashed_password
+        db.commit()
+        return user
+    except Exception as e:
+        logging.warning(f"Error changing password for {user_id}: {e}")
