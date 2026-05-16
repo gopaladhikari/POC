@@ -161,6 +161,29 @@ app.delete("/user/:id/hash", async (req, res) => {
   return res.json({ message: "User deleted" });
 });
 
+// Email Queue
+
+const QUEUE_NAME = "queue:email";
+
+app.post("/emails", async (req, res) => {
+  const job = {
+    to: req.body.to,
+    subject: req.body.subject,
+    body: req.body.body,
+    createdAt: new Date().toISOString(),
+  };
+
+  await redis.lpush(QUEUE_NAME, JSON.stringify(job));
+
+  res.json({ message: "Email added to queue" });
+});
+
+app.get("/emails", async (req, res) => {
+  const rawJobs = await redis.rpop(QUEUE_NAME);
+
+  res.json({ jobs: rawJobs ? JSON.parse(rawJobs) : [] });
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
