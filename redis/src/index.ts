@@ -100,6 +100,67 @@ app.get("/otp/:phone/ttl", async (req, res) => {
   res.json({ ttl });
 });
 
+// User
+
+function getUserkey(id: string) {
+  return `user:${id}`;
+}
+
+app.post("/user", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  const user = await redis.set(
+    getUserkey(id),
+    JSON.stringify(req.body),
+  );
+
+  return res.json({ user });
+});
+
+app.get("/user/:id", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  const user = await redis.get(getUserkey(id));
+
+  if (!user) return res.json({ message: "User not found" });
+
+  return res.json({ user: JSON.parse(user) });
+});
+
+app.delete("/user/:id", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  await redis.del(getUserkey(id));
+
+  return res.json({ message: "User deleted" });
+});
+
+app.post("/user/:id/hash", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  const user = await redis.hset(getUserkey(id), req.body);
+
+  return res.json({ user });
+});
+
+app.get("/user/:id/hash", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  const user = await redis.hgetall(getUserkey(id));
+
+  if (!user) return res.json({ message: "User not found" });
+
+  return res.json({ user });
+});
+
+app.delete("/user/:id/hash", async (req, res) => {
+  const { id } = req.params as { id: string };
+
+  await redis.hdel(getUserkey(id));
+
+  return res.json({ message: "User deleted" });
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
