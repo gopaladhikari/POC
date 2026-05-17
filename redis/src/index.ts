@@ -7,6 +7,10 @@ const app = express();
 
 const redis = new Redis("redis://localhost:6379");
 
+redis.subscribe("notifications", (channel, message) => {
+  console.log("notifications", channel, message);
+});
+
 const BANNER_KEY = "app:banner";
 
 function otpKey(phone: string) {
@@ -212,6 +216,24 @@ app.post("/welcome-emails", async (req, res) => {
   console.log("Job added", job);
 
   res.json({ job });
+});
+
+// Pub sub
+
+app.post("/notifications", async (req, res) => {
+  const { message } = req.body;
+
+  const payload = {
+    message,
+    createdAt: new Date().toISOString(),
+  };
+
+  const receiver = await redis.publish(
+    "notifications",
+    JSON.stringify(payload),
+  );
+
+  res.json({ receiver });
 });
 
 app.listen(3000, () => {
