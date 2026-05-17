@@ -1,6 +1,7 @@
 import express from "express";
 import Redis from "ioredis";
 import mongoose from "mongoose";
+import { emailQueue } from "./queue";
 
 const app = express();
 
@@ -182,6 +183,35 @@ app.get("/emails", async (req, res) => {
   const rawJobs = await redis.rpop(QUEUE_NAME);
 
   res.json({ jobs: rawJobs ? JSON.parse(rawJobs) : [] });
+});
+
+// BullMQ
+
+app.post("/welcome-emails", async (req, res) => {
+  const { email } = req.body;
+
+  const job = await emailQueue.add(
+    "send-welcome-email",
+    {
+      name: "welcome-email",
+      data: {
+        to: email,
+        subject: "Welcome to Redis",
+        body: "Welcome to Redis",
+      },
+    },
+    {
+      attempts: 3,
+      backoff: {
+        type: "exponential",
+        delay: 5000,
+      },
+    },
+  );
+
+  console.log("Job added", job);
+
+  res.json({ job });
 });
 
 app.listen(3000, () => {
