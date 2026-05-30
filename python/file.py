@@ -1,4 +1,4 @@
-f = open("python/file.txt")
+f = open("file.txt")
 
 data = f.read()
 
@@ -7,11 +7,11 @@ print(data)
 f.close()
 
 input = input("Enter your name: ")
-f = open("python/file.txt", "w")
+f = open("file.txt", "w")
 f.write(input)
 f.close()
 
 
-with open("python/file.txt", "r") as f:
+with open("file.txt", "r") as f:
     data = f.read()
     print(data)
