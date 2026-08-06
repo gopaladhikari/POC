@@ -1,6 +1,8 @@
 from multiprocessing import Process
 import time
 
+# Parallelism = Multiprocessing
+
 
 def brew_tea(name: str):
     for i in range(1, 4):

@@ -1,6 +1,8 @@
 import threading
 import time
 
+# Concurrency = Threading, asyncio
+
 
 def take_order():
     for i in range(1, 4):
