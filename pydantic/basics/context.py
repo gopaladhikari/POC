@@ -7,6 +7,10 @@ class Order(BaseModel):
 
     @field_validator("item_id")
     def check_item_in_stock(cls, v: int, info: ValidationInfo):
+
+        if not info.context:
+            raise ValueError("Missing context")
+
         # Access the external dictionary we passed in
         db_connection = info.context.get("db")
 
