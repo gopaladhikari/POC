@@ -1,28 +1,18 @@
-from openai import OpenAI
-from google import genai
 from dotenv import load_dotenv
+from rich import print
+
+# from .openai import openai
+from .gemini import google_genai
 
 load_dotenv()
 
-openai_client = OpenAI()
-
-google_client = genai.Client()
-
-
-print("Hello from python main file")
-
 
 def main():
-    response = openai_client.responses.create(
-        model="gpt-4o-mini",
-        input="Write a one-sentence bedtime story about a unicorn.",
-    )
+    # response = openai()
 
-    interaction = google_client.interactions.create(
-        model="gemini-3.6-flash", input="Explain how AI works in a few words"
-    )
+    interaction = google_genai()
 
-    print(response.output_text)
+    # print(response.output_text)
 
     print(interaction.output_text)
 
