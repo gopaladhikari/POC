@@ -26,7 +26,7 @@ def few_shot_prompt():
     user_input = input("Enter your prompt: ")
 
     interaction = google_client.interactions.create(
-        model="gemini-pro-latest",
+        model="gemini-3.6-flash",
         input=user_input,
         system_instruction=system_instruction,
     )
