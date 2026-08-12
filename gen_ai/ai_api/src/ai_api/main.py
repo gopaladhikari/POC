@@ -7,30 +7,26 @@ from rich import print
 # from .prompts.chain_of_thought import cot
 # from .prompts.structure_output import generate_user
 # from .prompts.auto_cot import chat
+# from .prompts.ask_ai import ask_ai
+# from .prompts.persona_prompting import persona_prompting
 
-from pydantic import BaseModel
-from .prompts.ask_ai import ask_ai
+
+# from pydantic import BaseModel
+
+from .prompts.gkp_prompting import generated_knowledge
 
 load_dotenv()
 
 
-class UserProfile(BaseModel):
-    name: str
-    age: int
-
-
-class MathAnswer(BaseModel):
-    formula: str
-    result: float
-
-
 def main():
 
-    user = ask_ai("Create a random user", UserProfile)
-    print(user.name)
+    topic = input("Enter a topic: ")
 
-    math = ask_ai("What is 100 divided by 4?", MathAnswer)
-    print(math.result)
+    user_question = input("Enter a question: ")
+
+    response = generated_knowledge(user_question, topic)
+
+    print(response.output_text)
 
 
 if __name__ == "__main__":
