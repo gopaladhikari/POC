@@ -1,5 +1,6 @@
 from google import genai
 from google.genai import types
+from .schema.llm_output_schema import WeatherResponse
 import requests
 
 client = genai.Client()
@@ -34,6 +35,8 @@ def main():
             system_instruction=system_instruction,
             temperature=0.5,
             tools=[get_weather],
+            response_mime_type="application/json",
+            response_schema=WeatherResponse,
         ),
     )
 
@@ -51,7 +54,19 @@ def main():
 
             response = chat.send_message(user_query)
 
-            print(f"Gemini: {response.text}")
+            if not response.text:
+                print("No response received from the model.")
+                continue
+
+            structured_data = WeatherResponse.model_validate_json(response.text)
+
+            print(f"\n--- Structured Data ---")
+            print(f"City: {structured_data.city_detected}")
+            print(f"Temp: {structured_data.raw_temperature}")
+            print(
+                f"Rain Warning: {'🌧️ Yes' if structured_data.is_raining else '☀️ No'}"
+            )
+            print(f"Summary: {structured_data.friendly_summary}")
 
         except Exception as e:
             print(f"Error: {str(e)}")
