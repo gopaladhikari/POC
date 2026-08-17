@@ -7,7 +7,7 @@ from pathlib import Path
 
 def index_pdf(pdf_path: Path):
     # Load the PDF
-    loader = PyPDFLoader(pdf_path)
+    loader = PyPDFLoader(str(pdf_path))
 
     docs = loader.load()
 
@@ -21,7 +21,10 @@ def index_pdf(pdf_path: Path):
     embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-2-preview")
 
     vectors_store = QdrantVectorStore.from_documents(
-        documents=chunks, embedding=embeddings, url="http://localhost:6333"
+        documents=chunks,
+        embedding=embeddings,
+        url="http://localhost:6333",
+        collection_name="test",
     )
 
     print("Indexing completed")
