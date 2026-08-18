@@ -16,8 +16,6 @@ def chat():
         collection_name="test",
     )
 
-    previous_interaction_id: str | None = None
-
     system_instruction = f"""
           You are a highly analytical, precise corporate archivist assistant answering questions about the Aegis Dynamics Corporation 50-Year Operational & Financial Archive (1976–2026).
           

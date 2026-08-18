@@ -61,3 +61,8 @@ __pycache__/
 # 
 
 *.exe
+
+# Qdrant Database Storage
+qdrant_storage/
+
+*.pdf
