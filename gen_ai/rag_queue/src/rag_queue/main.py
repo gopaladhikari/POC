@@ -31,3 +31,21 @@ def chat(query: str):
     job = queue.enqueue(process_query, query)
 
     return {"status": job.get_status(), "job_id": job.id}
+
+
+@app.get("/result/{job_id}")
+def get_result(job_id: str):
+
+    job = queue.fetch_job(job_id)
+
+    if not job:
+        return {"status": "not found", "result": None}
+
+    print(job.return_value())
+
+    result = job.return_value()
+
+    return {
+        "status": job.get_status(),
+        "result": result,
+    }

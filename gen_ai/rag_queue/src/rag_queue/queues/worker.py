@@ -79,9 +79,9 @@ def process_query(query: str):
 
         response = client.responses.create(**request_kwargs)
 
-        print(f"\nAgent: {response.output_text}")
-
         previous_id = response.id
+
+        return response.output_text
 
     except Exception as e:
         print(f"\nAPI Error: {str(e)}")
