@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class Reviews(SQLModel, table=True):
-    id: int = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True)
     play_name: str = Field(index=True)
     reviwer_name: str
     rating: int = Field(..., le=5, ge=1)
