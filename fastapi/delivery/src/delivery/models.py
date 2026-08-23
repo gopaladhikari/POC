@@ -12,7 +12,7 @@ class OrderStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
-class Order(SQLModel, table=True):
+class Orders(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     customer_name: str
     delivery_address: str
