@@ -2,6 +2,7 @@ from enum import Enum
 from datetime import datetime
 from typing import Optional
 from sqlmodel import SQLModel, Field, func
+from delivery.database import get_session
 
 
 class OrderStatus(str, Enum):

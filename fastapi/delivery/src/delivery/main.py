@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from .database import create_tables
 from .models import Orders
+from .orders.routes import orders_router
+from .stats.routes import stats_router
 
 
 @asynccontextmanager
@@ -16,6 +18,10 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+
+app.include_router(orders_router)
+app.include_router(stats_router)
 
 
 @app.get("/")
