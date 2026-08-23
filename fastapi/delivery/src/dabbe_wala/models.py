@@ -38,7 +38,6 @@ class OrderUpdate(SQLModel):
 
 
 class StatusLog(SQLModel):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    order_id: int = Field(foreign_key="order.id")
+    order_id: int
     status: OrderStatus
-    created_at: datetime = Field(sa_column_kwargs={"server_default": func.now()})
+    created_at: datetime
