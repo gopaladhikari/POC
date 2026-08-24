@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from .database import create_table
+from .models.books import Books
+from .models.users import Users
 
 
 @asynccontextmanager
