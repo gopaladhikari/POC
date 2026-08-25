@@ -31,6 +31,11 @@ class ReadBook(SQLModel):
     is_sold: bool
 
 
+class UpdateBook(SQLModel):
+    price: Optional[int] = None
+    is_sold: Optional[bool] = None
+
+
 # Circular import handling
 
 from .users import Users
