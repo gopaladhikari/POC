@@ -1,17 +1,15 @@
 [project]
-name = "algo-bot"
+name = "pandas-numpy"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "gopaladhikari", email = "gopuadks@gmail.com" }]
 requires-python = ">=3.14"
-dependencies = [
-    "matplotlib>=3.11.1",
-    "yfinance>=1.7.0",
-]
+dependencies = ["pandas>=3.0.5"]
 
 [project.scripts]
-start = "algo_bot.main:main"
+pandas = "pandas_numpy.pandas.main:main"
+numpy = "pandas_numpy.numpy.main:main"
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
