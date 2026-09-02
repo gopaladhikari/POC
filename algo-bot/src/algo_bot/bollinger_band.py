@@ -21,18 +21,19 @@ else:
     print("Error: No data was downloaded.")
 
 
-def Bollinger_Band(DF: DataFrame, period=20, std=2):
+def Bollinger_Band(DF: DataFrame, period: int = 20, num_std: float = 2.0) -> DataFrame:
     df = DF.copy()
 
     df["MA"] = df["Close"].rolling(window=period).mean()
 
-    df["Upper"] = df["MA"] + df["Close"].rolling(window=period).std(ddof=0) * 2
+    rolling_std = df["Close"].rolling(window=period).std(ddof=0)
 
-    df["Lower"] = df["MA"] - df["Close"].rolling(window=period).std(ddof=0) * 2
-
+    df["Upper"] = df["MA"] + (rolling_std * num_std)
+    df["Lower"] = df["MA"] - (rolling_std * num_std)
     df["Width"] = df["Upper"] - df["Lower"]
+    df["Bandwidth_Pct"] = (df["Width"] / df["MA"]) * 100  # Normalized squeeze metric
 
-    return df.loc[:, ["Upper", "Lower", "Width", "MA"]]
+    return df.loc[:, ["MA", "Upper", "Lower", "Width", "Bandwidth_Pct"]]
 
 
 for ticker, data in ohcv_data.items():

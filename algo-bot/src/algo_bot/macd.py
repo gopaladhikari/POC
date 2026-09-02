@@ -22,18 +22,31 @@ else:
     print("Error: No data was downloaded.")
 
 
-def MACD(DF: DataFrame, fast_line=12, slow_line=26, signal_line=9):
+def MACD(
+    DF: DataFrame,
+    fast_line: int = 12,
+    slow_line: int = 26,
+    signal_line: int = 9,
+) -> DataFrame:
     df = DF.copy()
 
-    df["MA_Fast"] = df["Close"].ewm(span=fast_line, min_periods=fast_line).mean()
+    df["MA_Fast"] = (
+        df["Close"].ewm(span=fast_line, min_periods=fast_line, adjust=False).mean()
+    )
 
-    df["MA_Slow"] = df["Close"].ewm(span=slow_line, min_periods=slow_line).mean()
+    df["MA_Slow"] = (
+        df["Close"].ewm(span=slow_line, min_periods=slow_line, adjust=False).mean()
+    )
 
     df["MACD"] = df["MA_Fast"] - df["MA_Slow"]
 
-    df["Signal"] = df["MACD"].ewm(span=signal_line, min_periods=signal_line).mean()
+    df["Signal"] = (
+        df["MACD"].ewm(span=signal_line, min_periods=signal_line, adjust=False).mean()
+    )
 
-    return df.loc[:, ["MACD", "Signal"]]
+    df["Histogram"] = df["MACD"] - df["Signal"]
+
+    return df.loc[:, ["MACD", "Signal", "Histogram"]]
 
 
 for ticker, data in ohcv_data.items():

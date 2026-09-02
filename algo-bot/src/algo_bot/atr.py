@@ -21,18 +21,17 @@ else:
     print("Error: No data was downloaded.")
 
 
-def ATR(DF: DataFrame, period=14):
+def ATR(DF: DataFrame, period: int = 14) -> DataFrame:
     df = DF.copy()
+    prev_close = df["Close"].shift(1)
 
-    df["H-L"] = df["High"] - df["Low"]
+    h_l = df["High"] - df["Low"]
+    h_pc = (df["High"] - prev_close).abs()
+    l_pc = (df["Low"] - prev_close).abs()
 
-    df["H-PC"] = df["High"] - df["Close"].shift(1)
+    df["TR"] = h_l.combine(h_pc, max).combine(l_pc, max)
 
-    df["L-PC"] = df["Low"] - df["Close"].shift(1)
-
-    df["TR"] = df[["H-L", "H-PC", "L-PC"]].max(axis=1, skipna=False)
-
-    df["ATR"] = df["TR"].ewm(span=period, min_periods=period).mean()
+    df["ATR"] = df["TR"].ewm(alpha=1 / period, min_periods=period, adjust=False).mean()
 
     return df.loc[:, ["ATR"]]
 
