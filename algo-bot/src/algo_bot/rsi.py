@@ -27,8 +27,8 @@ def RSI(data: DataFrame, period: int = 14) -> DataFrame:
     Calculates the Relative Strength Index (RSI) for a given period.
 
     Parameters:
-    - data (DataFrame): The input data to calculate the RSI for.
-    - period (int): The period for which the RSI will be calculated. Default is 14.
+    - odata (DataFrame): The input data to calculate the RSI for.
+    - period (int): The perid for which the RSI will be calculated. Default is 14.
 
     Returns:
     - DataFrame: The RSI values for the given period.
