@@ -9,7 +9,7 @@ cryptos = ["BTC-USD", "ETH-USD", "BNB-USD", "SOL-USD"]
 
 ohcv_data: dict[str, DataFrame] = {}
 
-temp = yf.download(tickers=cryptos, period="1mo", interval="15m")
+temp = yf.download(tickers=cryptos, period="1y", interval="1d")
 
 
 if temp is not None and not temp.empty:
@@ -28,7 +28,7 @@ def Volatility(DF: DataFrame) -> DataFrame:
 
     df["return"] = df["Close"].pct_change()
 
-    df["volatility"] = df["return"].std() * sqrt(365)
+    df["volatility"] = df["return"].rolling(window=30).std() * sqrt(365) * 100
 
     return df[["volatility"]]
 
