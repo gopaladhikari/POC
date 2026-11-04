@@ -19,6 +19,13 @@ public:
     ingredients = ingr;
   }
 
+  MyClass(const MyClass &other)
+  {
+    teaName = new string(*other.teaName); // Deep copy of teaName
+    serving = other.serving;
+    ingredients = other.ingredients; // Vector has its own copy constructor
+  }
+
   ~MyClass()
   {
     delete teaName;
